@@ -17,7 +17,7 @@
             <a @click="logout">Logout</a>
           </li>
         </ul>
-        <a href class="btn-floating btn-large halfway-fab pink">
+        <a href class="btn-floating btn-large halfway-fab pink" v-if="user">
           <router-link :to="{ name: 'AddSmoothie' }">
             <i class="material-icons">add</i>
           </router-link>

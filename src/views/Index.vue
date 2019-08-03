@@ -2,7 +2,7 @@
   <div class="index container">
     <div class="card" v-for="smoothie in smoothies" :key="smoothie.id">
       <div class="card-content">
-        <i class="material-icons delete" @click="deleteSmoothie(smoothie.id)">delete</i>
+        <i class="material-icons delete" @click="deleteSmoothie(smoothie.id)" v-if="user">delete</i>
         <h2 class="indigo-text">{{ smoothie.title }}</h2>
         <ul class="ingredients">
           <li v-for="(ing, index) in smoothie.ingredients" :key="index">
@@ -19,7 +19,7 @@
           <span class="indigo-text text-darken-2 like_count">: {{ smoothie.likes }}</span>
         </div>
       </div>
-      <span class="btn-floating btn-large halfway-fab pink">
+      <span class="btn-floating btn-large halfway-fab pink" v-if="user">
         <router-link :to="{ name: 'EditSmoothie', params: { smoothie_slug: smoothie.slug } }">
           <i class="material-icons">edit</i>
         </router-link>
@@ -30,12 +30,13 @@
 
 <script>
 import db from '@/firebase/init'
-
+import firebase from 'firebase'
 export default {
   name: 'Index',
   data() {
     return {
-      smoothies: []
+      smoothies: [],
+      user: null
     }
   },
   methods: {
@@ -51,19 +52,23 @@ export default {
         })
     },
     addLike(smoothie) {
-      if (smoothie.likes) {
-        smoothie.likes += 1
+      if (this.user) {
+        if (smoothie.likes) {
+          smoothie.likes += 1
+        } else {
+          smoothie.likes = 1
+        }
+        db.collection('Smoothies')
+          .doc(smoothie.id)
+          .update({
+            likes: smoothie.likes
+          })
+          .then(() => {
+            this.smoothies
+          })
       } else {
-        smoothie.likes = 1
+        // something message for unsigned user
       }
-      db.collection('Smoothies')
-        .doc(smoothie.id)
-        .update({
-          likes: smoothie.likes
-        })
-        .then(() => {
-          this.smoothies
-        })
     }
   },
   created() {
@@ -77,6 +82,15 @@ export default {
           this.smoothies.push(smoothie)
         })
       })
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })
   }
 }
 </script>

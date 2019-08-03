@@ -62,7 +62,8 @@ export default {
                     .doc(this.slug)
                     .set({
                       user_id: this.userId,
-                      uid: cred.user.uid
+                      uid: cred.user.uid,
+                      slug: this.slug
                     })
                 })
                 .then(() => {

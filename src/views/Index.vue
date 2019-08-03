@@ -14,6 +14,10 @@
             <span class="chip">#{{ tag }}</span>
           </li>
         </ul>
+        <div>
+          <i class="material-icons like" @click="addLike(smoothie)">favorite</i>
+          <span class="indigo-text text-darken-2 like_count">: {{ smoothie.likes }}</span>
+        </div>
       </div>
       <span class="btn-floating btn-large halfway-fab pink">
         <router-link :to="{ name: 'EditSmoothie', params: { smoothie_slug: smoothie.slug } }">
@@ -44,6 +48,21 @@ export default {
           this.smoothies = this.smoothies.filter(smoothie => {
             return smoothie.id !== id
           })
+        })
+    },
+    addLike(smoothie) {
+      if (smoothie.likes) {
+        smoothie.likes += 1
+      } else {
+        smoothie.likes = 1
+      }
+      db.collection('Smoothies')
+        .doc(smoothie.id)
+        .update({
+          likes: smoothie.likes
+        })
+        .then(() => {
+          this.smoothies
         })
     }
   },
@@ -100,5 +119,18 @@ export default {
   cursor: pointer;
   color: #aaa;
   font-size: 1.4em;
+}
+
+.index .like {
+  color: #f1297c;
+  cursor: pointer;
+  font-size: 1.4em;
+}
+
+.index .like_count {
+  color: #aaa;
+  position: relative;
+  bottom: 6px;
+  padding: 5px;
 }
 </style>

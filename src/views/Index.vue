@@ -9,6 +9,11 @@
             <span class="chip">{{ ing }}</span>
           </li>
         </ul>
+        <ul class="tags">
+          <li v-for="(tag, index) in smoothie.tags" :key="index">
+            <span class="chip">#{{ tag }}</span>
+          </li>
+        </ul>
       </div>
       <span class="btn-floating btn-large halfway-fab pink">
         <router-link :to="{ name: 'EditSmoothie', params: { smoothie_slug: smoothie.slug } }">
@@ -78,6 +83,14 @@ export default {
 
 .index .ingredients li {
   display: inline-block;
+}
+
+.index .tags li {
+  display: inline-block;
+}
+
+.index .tags .chip {
+  background-color: #ffd16f;
 }
 
 .index .delete {

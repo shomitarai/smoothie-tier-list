@@ -13,9 +13,20 @@
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
       </div>
 
+      <div v-for="(tag, index) in tags" :key="index" class="field">
+        <label for="tag">Tag:</label>
+        <input type="text" name="tag" v-model="tags[index]" />
+        <i class="material-icons delete" @click="deleteTag(tag)">delete</i>
+      </div>
+
       <div class="field add-ingredient">
         <label for="add-ingredient">Add an ingredient:</label>
         <input type="text" name="add-ingredient" @keydown.tab.prevent="addIng" v-model="another" />
+      </div>
+
+      <div class="field">
+        <label for="add-tag">Add a tag:</label>
+        <input type="text" name="add-tag" @keydown.tab.prevent="addTag" v-model="another_tag" />
       </div>
 
       <div class="field center-align">
@@ -36,7 +47,9 @@ export default {
     return {
       title: null,
       another: null,
+      another_tag: null,
       ingredients: [],
+      tags: [],
       feedback: null,
       slug: null
     }
@@ -55,6 +68,7 @@ export default {
           .add({
             title: this.title,
             ingredients: this.ingredients,
+            tags: this.tags,
             slug: this.slug
           })
           .then(() => {
@@ -76,9 +90,23 @@ export default {
         this.feedback = 'You must enter a value to add an ingredient'
       }
     },
+    addTag() {
+      if (this.another_tag) {
+        this.tags.push(this.another_tag)
+        this.another_tag = null
+        this.feedback = null
+      } else {
+        this.feedback = 'You must enter a value to add a tag'
+      }
+    },
     deleteIng(ing) {
       this.ingredients = this.ingredients.filter(ingredient => {
         return ingredient !== ing
+      })
+    },
+    deleteTag(tag) {
+      this.tags = this.tags.filter(cur_tag => {
+        return cur_tag != tag
       })
     }
   }

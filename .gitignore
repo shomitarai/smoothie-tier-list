@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# ignore firebase directories and files
+firebase/
+.firebaserc
+firebase.json
+firestore.rules

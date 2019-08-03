@@ -69,6 +69,7 @@ export default {
             title: this.title,
             ingredients: this.ingredients,
             tags: this.tags,
+            likes: 0,
             slug: this.slug
           })
           .then(() => {

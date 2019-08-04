@@ -5,6 +5,7 @@ import AddSmoothie from "@/views/AddSmoothie";
 import EditSmoothie from "@/views/EditSmoothie";
 import Login from "@/views/auth/Login";
 import Signup from "@/views/auth/Signup";
+import ViewProfile from "@/views/ViewProfile";
 import firebase from "firebase";
 
 Vue.use(Router);
@@ -43,6 +44,14 @@ const router = new Router({
       path: "/signup",
       name: "Signup",
       component: Signup
+    },
+    {
+      path: "/profile/:slug",
+      name: "ViewProfile",
+      component: ViewProfile,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });

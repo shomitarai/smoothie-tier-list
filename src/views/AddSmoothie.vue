@@ -29,9 +29,25 @@
         <input type="text" name="add-tag" @keydown.tab.prevent="addTag" v-model="another_tag" />
       </div>
 
+      <div class="field center-align" v-if="toggleProgress">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="field center-align">
         <p v-if="feedback" class="red-text">{{ feedback }}</p>
-        <button class="btn pink">Add Smoothie</button>
+        <button class="btn pink" :class="{'disabled': toggleProgress}">Add Smoothie</button>
       </div>
     </form>
   </div>
@@ -51,12 +67,14 @@ export default {
       ingredients: [],
       tags: [],
       feedback: null,
-      slug: null
+      slug: null,
+      toggleProgress: false
     }
   },
   methods: {
     AddSmoothie() {
       if (this.title) {
+        this.toggleProgress = true
         this.feedback = null
         // create a slug
         this.slug = slugify(this.title, {
@@ -74,9 +92,11 @@ export default {
           })
           .then(() => {
             this.$router.push({ name: 'Index' })
+            this.toggleProgress = false
           })
           .catch(err => {
             console.log(err)
+            this.toggleProgress = false
           })
       } else {
         this.feedback = 'You must enter a smoothie title'

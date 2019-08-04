@@ -32,9 +32,25 @@
         <input type="text" name="add-tag" @keydown.tab.prevent="addTag" v-model="another_tag" />
       </div>
 
+      <div class="field center-align" v-if="toggleProgress">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="field center-align">
         <p v-if="feedback" class="red-text">{{ feedback }}</p>
-        <button class="btn pink">Update Smoothie</button>
+        <button class="btn pink" :class="{'disabled': toggleProgress}">Update Smoothie</button>
       </div>
     </form>
   </div>
@@ -51,13 +67,15 @@ export default {
       smoothie: null,
       another: null,
       another_tag: null,
-      feedback: null
+      feedback: null,
+      toggleProgress: false
     }
   },
   methods: {
     EditSmoothie() {
       if (this.smoothie.title) {
         this.feedback = null
+        this.toggleProgress = true
         // create a slug
         this.smoothie.slug = slugify(this.smoothie.title, {
           replacement: '-',
@@ -72,9 +90,11 @@ export default {
             slug: this.smoothie.slug
           })
           .then(() => {
+            this.toggleProgress = false
             this.$router.push({ name: 'Index' })
           })
           .catch(err => {
+            this.toggleProgress = false
             console.log(err)
           })
       } else {

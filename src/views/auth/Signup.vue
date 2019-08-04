@@ -15,6 +15,23 @@
         <label for="password">Password:</label>
         <input type="password" name="password" v-model="password" />
       </div>
+
+      <div class="field center-align" v-if="toggleProgress">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <p v-if="feedback" class="red-text center">{{ feedback }}</p>
       <div class="field center">
         <button class="btn indigo">Signup</button>
@@ -36,12 +53,14 @@ export default {
       email: null,
       userId: null,
       password: null,
-      feedback: null
+      feedback: null,
+      toggleProgress: false
     }
   },
   methods: {
     signup() {
       if (this.email && this.userId && this.password) {
+        this.toggleProgress = true
         this.slug = slugify(this.userId, {
           replacement: '-',
           remove: /[$*_+~.()'"!\-:@]/g,
@@ -52,6 +71,7 @@ export default {
         checkUserId({ slug: this.slug })
           .then(result => {
             if (!result.data.unique) {
+              this.toggleProgress = false
               this.feedback = 'This User ID already exists'
             } else {
               firebase
@@ -67,14 +87,17 @@ export default {
                     })
                 })
                 .then(() => {
+                  this.toggleProgress = false
                   this.$router.push({ name: 'Index' })
                 })
                 .catch(err => {
+                  this.toggleProgress = false
                   this.feedback = err.message
                 })
             }
           })
           .catch(err => {
+            this.toggleProgress = false
             this.feedback = err.message
           })
       } else {

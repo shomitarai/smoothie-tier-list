@@ -6,7 +6,9 @@
           <span class="nav-title">Smoothies Tier List</span>
         </router-link>
         <ul class="right">
-          <li v-if="user">{{ user.email }}</li>
+          <li v-if="user">
+            <router-link :to="{ name: 'ViewProfile',  params: { slug: slug } }">{{ user_id }}</router-link>
+          </li>
           <li v-if="!user">
             <router-link :to="{name: 'Signup'}">Signup</router-link>
           </li>
@@ -29,18 +31,30 @@
 
 <script>
 import firebase from 'firebase'
-
+import db from '@/firebase/init'
 export default {
   name: 'Navbar',
   data() {
     return {
-      user: null
+      user: null,
+      user_id: null,
+      slug: null
     }
   },
   mounted() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.user = user
+
+        db.collection('users')
+          .where('uid', '==', user.uid)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              this.user_id = doc.data().user_id
+              this.slug = doc.data().slug
+            })
+          })
       } else {
         this.user = null
       }

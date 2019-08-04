@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style>
-.view-profile .row .col div {
+/* .view-profile .row .col div {
   max-width: 100%;
-}
+} */
 </style>

@@ -12,6 +12,19 @@
         <label for="new-password-edit-view">Enter new password</label>
         <input type="password" name="new-password-edit-view" class="field" v-model="newPassword" />
         <button class="btn indigo">Update password</button>
+        <div class="preloader-wrapper small active" v-if="toggleProgress">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
         <a @click="toggleEditView" class="cancel-btn">Cancel</a>
       </form>
     </div>
@@ -29,20 +42,24 @@ export default {
       isPasswordEdit: false,
       newPassword: null,
       curPassword: null,
-      feedback: null
+      feedback: null,
+      toggleProgress: false
     }
   },
   methods: {
     pushPassword() {
       // firebase auth
+      this.toggleProgress = true
       let user = firebase.auth().currentUser
       user
         .updatePassword(this.newPassword)
         .then(() => {
           this.isPasswordEdit = false
           this.feedback = 'update has successful'
+          this.toggleProgress = false
         })
         .catch(err => {
+          this.toggleProgress = false
           this.feedback = err.message
         })
     },
@@ -67,8 +84,13 @@ export default {
   cursor: pointer;
 }
 .password .cancel-btn {
-  position: relative;
-  left: 10px;
+  margin-left: 10px;
   cursor: pointer;
+}
+
+.password .preloader-wrapper {
+  position: relative;
+  top: 12px;
+  margin-left: 10px;
 }
 </style>

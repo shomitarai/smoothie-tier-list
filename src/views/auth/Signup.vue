@@ -44,7 +44,6 @@
 import slugify from 'slugify'
 import db from '@/firebase/init'
 import firebase from 'firebase'
-import functions from 'firebase/functions'
 
 export default {
   name: 'Signup',

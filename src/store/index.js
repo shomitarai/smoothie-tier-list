@@ -6,5 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
-  state: {}
+  state: {
+    load_status: false
+  },
+  mutations: {
+    SET_LOAD_STATUS(state, loadStatus) {
+      state.load_status = loadStatus
+    }
+  }
 })

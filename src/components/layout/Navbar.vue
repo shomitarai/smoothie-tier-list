@@ -26,6 +26,9 @@
         </a>
       </div>
     </nav>
+    <div class="progress" v-if="loadStatus">
+      <div class="indeterminate"></div>
+    </div>
   </div>
 </template>
 
@@ -68,6 +71,11 @@ export default {
         .then(() => {
           this.$router.push({ name: 'Login' })
         })
+    }
+  },
+  computed: {
+    loadStatus(){
+      return this.$store.state.load_status
     }
   }
 }

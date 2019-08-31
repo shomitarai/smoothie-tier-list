@@ -112,7 +112,7 @@ export default {
     },
     addTag() {
       if (this.another_tag) {
-        this.tags.push(this.another_tag)
+        this.smoothie.tags.push(this.another_tag)
         this.another_tag = null
         this.feedback = null
       } else {
@@ -127,7 +127,7 @@ export default {
       )
     },
     deleteTag(tag) {
-      this.tags = this.tags.filter(cur_tag => {
+      this.smoothie.tags = this.smoothie.tags.filter(cur_tag => {
         return cur_tag != tag
       })
     }

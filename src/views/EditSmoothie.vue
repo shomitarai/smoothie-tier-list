@@ -10,13 +10,13 @@
         <input type="text" name="title" v-model="smoothie.title" />
       </div>
 
-      <div v-for="(ing, index) in smoothie.ingredients" :key="index" class="field">
+      <div v-for="(ing, index) in smoothie.ingredients" :key="`ing-${index}`" class="field">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="smoothie.ingredients[index]" />
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
       </div>
 
-      <div v-for="(tag, index) in smoothie.tags" :key="index" class="field">
+      <div v-for="(tag, index) in smoothie.tags" :key="`tag-${index}`" class="field">
         <label for="tag">Tag:</label>
         <input type="text" name="tag" v-model="smoothie.tags[index]" />
         <i class="material-icons delete" @click="deleteTag(tag)">delete</i>
@@ -32,9 +32,25 @@
         <input type="text" name="add-tag" @keydown.tab.prevent="addTag" v-model="another_tag" />
       </div>
 
+      <div class="field center-align" v-if="toggleProgress">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="field center-align">
         <p v-if="feedback" class="red-text">{{ feedback }}</p>
-        <button class="btn pink">Update Smoothie</button>
+        <button class="btn pink" :class="{'disabled': toggleProgress}">Update Smoothie</button>
       </div>
     </form>
   </div>
@@ -51,13 +67,15 @@ export default {
       smoothie: null,
       another: null,
       another_tag: null,
-      feedback: null
+      feedback: null,
+      toggleProgress: false
     }
   },
   methods: {
     EditSmoothie() {
       if (this.smoothie.title) {
         this.feedback = null
+        this.toggleProgress = true
         // create a slug
         this.smoothie.slug = slugify(this.smoothie.title, {
           replacement: '-',
@@ -69,13 +87,15 @@ export default {
           .update({
             title: this.smoothie.title,
             ingredients: this.smoothie.ingredients,
+            tags: this.smoothie.tags,
             slug: this.smoothie.slug
           })
           .then(() => {
+            this.toggleProgress = false
             this.$router.push({ name: 'Index' })
           })
-          .catch(err => {
-            console.log(err)
+          .catch(() => {
+            this.toggleProgress = false
           })
       } else {
         this.feedback = 'You must enter a smoothie title'
@@ -92,7 +112,7 @@ export default {
     },
     addTag() {
       if (this.another_tag) {
-        this.tags.push(this.another_tag)
+        this.smoothie.tags.push(this.another_tag)
         this.another_tag = null
         this.feedback = null
       } else {
@@ -107,7 +127,7 @@ export default {
       )
     },
     deleteTag(tag) {
-      this.tags = this.tags.filter(cur_tag => {
+      this.smoothie.tags = this.smoothie.tags.filter(cur_tag => {
         return cur_tag != tag
       })
     }

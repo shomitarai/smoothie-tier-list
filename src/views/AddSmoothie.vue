@@ -56,6 +56,7 @@
 
 <script>
 import db from '@/firebase/init'
+import firebase from 'firebase'
 import slugify from 'slugify'
 export default {
   name: 'AddSmoothie',
@@ -68,7 +69,9 @@ export default {
       tags: [],
       feedback: null,
       slug: null,
-      toggleProgress: false
+      toggleProgress: false,
+      user: null,
+      user_id: null
     }
   },
   methods: {
@@ -88,14 +91,15 @@ export default {
             ingredients: this.ingredients,
             tags: this.tags,
             likes: 0,
-            slug: this.slug
+            slug: this.slug,
+            uid: this.user.uid,
+            user_id: this.user_id
           })
           .then(() => {
             this.$router.push({ name: 'Index' })
             this.toggleProgress = false
           })
-          .catch(err => {
-            console.log(err)
+          .catch(() => {
             this.toggleProgress = false
           })
       } else {
@@ -130,6 +134,20 @@ export default {
         return cur_tag != tag
       })
     }
+  },
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user
+        db.collection('users').where("uid", "==", user.uid).get().then(snapshot => {
+          snapshot.forEach(doc => {
+            this.user_id = doc.data().user_id
+          })
+        })
+      } else {
+        this.user = null
+      }
+    })
   }
 }
 </script>

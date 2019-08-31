@@ -93,9 +93,8 @@ export default {
             this.toggleProgress = false
             this.$router.push({ name: 'Index' })
           })
-          .catch(err => {
+          .catch(() => {
             this.toggleProgress = false
-            console.log(err)
           })
       } else {
         this.feedback = 'You must enter a smoothie title'

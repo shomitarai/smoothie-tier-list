@@ -10,13 +10,13 @@
         <input type="text" name="title" v-model="smoothie.title" />
       </div>
 
-      <div v-for="(ing, index) in smoothie.ingredients" :key="index" class="field">
+      <div v-for="(ing, index) in smoothie.ingredients" :key="`ing-${index}`" class="field">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="smoothie.ingredients[index]" />
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
       </div>
 
-      <div v-for="(tag, index) in smoothie.tags" :key="index" class="field">
+      <div v-for="(tag, index) in smoothie.tags" :key="`tag-${index}`" class="field">
         <label for="tag">Tag:</label>
         <input type="text" name="tag" v-model="smoothie.tags[index]" />
         <i class="material-icons delete" @click="deleteTag(tag)">delete</i>

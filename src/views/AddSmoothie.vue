@@ -7,13 +7,13 @@
         <input type="text" name="title" v-model="title" />
       </div>
 
-      <div v-for="(ing, index) in ingredients" :key="index" class="field">
+      <div v-for="(ing, index) in ingredients" :key="`ing-${index}`" class="field">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="ingredients[index]" />
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
       </div>
 
-      <div v-for="(tag, index) in tags" :key="index" class="field">
+      <div v-for="(tag, index) in tags" :key="`tag-${index}`" class="field">
         <label for="tag">Tag:</label>
         <input type="text" name="tag" v-model="tags[index]" />
         <i class="material-icons delete" @click="deleteTag(tag)">delete</i>

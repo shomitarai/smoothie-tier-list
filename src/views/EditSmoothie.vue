@@ -87,6 +87,7 @@ export default {
           .update({
             title: this.smoothie.title,
             ingredients: this.smoothie.ingredients,
+            tags: this.smoothie.tags,
             slug: this.smoothie.slug
           })
           .then(() => {

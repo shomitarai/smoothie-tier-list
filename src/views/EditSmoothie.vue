@@ -10,13 +10,13 @@
         <input type="text" name="title" v-model="smoothie.title" />
       </div>
 
-      <div v-for="(ing, index) in smoothie.ingredients" :key="index" class="field">
+      <div v-for="(ing, index) in smoothie.ingredients" :key="`ing-${index}`" class="field">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="smoothie.ingredients[index]" />
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
       </div>
 
-      <div v-for="(tag, index) in smoothie.tags" :key="index" class="field">
+      <div v-for="(tag, index) in smoothie.tags" :key="`tag-${index}`" class="field">
         <label for="tag">Tag:</label>
         <input type="text" name="tag" v-model="smoothie.tags[index]" />
         <i class="material-icons delete" @click="deleteTag(tag)">delete</i>
@@ -93,9 +93,8 @@ export default {
             this.toggleProgress = false
             this.$router.push({ name: 'Index' })
           })
-          .catch(err => {
+          .catch(() => {
             this.toggleProgress = false
-            console.log(err)
           })
       } else {
         this.feedback = 'You must enter a smoothie title'
@@ -112,7 +111,7 @@ export default {
     },
     addTag() {
       if (this.another_tag) {
-        this.tags.push(this.another_tag)
+        this.smoothie.tags.push(this.another_tag)
         this.another_tag = null
         this.feedback = null
       } else {
@@ -127,7 +126,7 @@ export default {
       )
     },
     deleteTag(tag) {
-      this.tags = this.tags.filter(cur_tag => {
+      this.smoothie.tags = this.smoothie.tags.filter(cur_tag => {
         return cur_tag != tag
       })
     }

@@ -2,7 +2,11 @@
   <div class="index container">
     <div class="card" v-for="smoothie in smoothies" :key="smoothie.id">
       <div class="card-content">
-        <i class="material-icons delete" @click="deleteSmoothie(smoothie.id)" v-if="user">delete</i>
+        <i
+          class="material-icons delete"
+          @click="deleteSmoothie(smoothie.id)"
+          v-if="isMatch(smoothie)"
+        >delete</i>
         <h2 class="indigo-text">{{ smoothie.title }}</h2>
         <ul class="ingredients">
           <li v-for="(ing, index) in smoothie.ingredients" :key="index">
@@ -18,8 +22,9 @@
           <i class="material-icons like" @click="addLike(smoothie)">favorite</i>
           <span class="indigo-text text-darken-2 like_count">: {{ smoothie.likes }}</span>
         </div>
+        <h3 class="indigo-text">by {{ smoothie.user_id }}</h3>
       </div>
-      <span class="btn-floating btn-large halfway-fab pink" v-if="user">
+      <span class="btn-floating btn-large halfway-fab pink" v-if="isMatch(smoothie)">
         <router-link :to="{ name: 'EditSmoothie', params: { smoothie_slug: smoothie.slug } }">
           <i class="material-icons">edit</i>
         </router-link>
@@ -69,6 +74,13 @@ export default {
       } else {
         // something message for unsigned user
       }
+    },
+    isMatch(smoothie){
+      if (!this.user){
+        return false
+      } else if(this.user.uid === smoothie.uid) {
+        return true
+      }
     }
   },
   created() {
@@ -110,7 +122,12 @@ export default {
   margin-top: 0px;
 }
 
-.index ingredients {
+.index h3 {
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+
+.index .ingredients {
   margin: 30px auto;
 }
 

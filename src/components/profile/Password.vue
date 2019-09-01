@@ -3,7 +3,7 @@
     <div class="password-profile" v-if="!isPasswordEdit">
       <label for="password-view">Password:</label>
       <p name="password-view">*******</p>
-      <a @click="toggleEditView" class="update-password">Update your password</a>
+      <a @click="toggleEditView" class="update-password" v-if="editable">Update your password</a>
     </div>
     <div class="password-profile-edit" v-if="isPasswordEdit">
       <form @submit.prevent="pushPassword">
@@ -37,6 +37,7 @@ import firebase from 'firebase'
 
 export default {
   name: 'Password',
+  props: ['editable'],
   data() {
     return {
       isPasswordEdit: false,

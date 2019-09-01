@@ -6,6 +6,7 @@ import EditSmoothie from '@/views/EditSmoothie'
 import Login from '@/views/auth/Login'
 import Signup from '@/views/auth/Signup'
 import ViewProfile from '@/views/ViewProfile'
+import Top from '@/views/Top'
 import firebase from 'firebase'
 import store from './store'
 
@@ -17,6 +18,11 @@ const router = new Router({
   routes: [
     {
       path: '/',
+      name: 'Top',
+      component: Top
+    },
+    {
+      path: '/index',
       name: 'Index',
       component: Index
     },

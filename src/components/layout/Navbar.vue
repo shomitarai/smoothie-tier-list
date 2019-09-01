@@ -1,11 +1,14 @@
 <template>
   <div class="navbar">
-    <nav class="nav-extended indigo darken-2">
+    <nav class="brown lighten-2">
       <div class="nav-wrapper">
-        <router-link :to="{ name: 'Index' }">
-          <span class="nav-title">Smoothies Tier List</span>
+        <router-link :to="{ name: 'Top' }">
+          <span class="brand-logo">Smoothie Magic</span>
         </router-link>
         <ul class="right">
+          <li>
+            <router-link :to="{ name: 'Index'}">List</router-link>
+          </li>
           <li v-if="user">
             <router-link :to="{ name: 'ViewProfile',  params: { slug: slug } }">{{ user_id }}</router-link>
           </li>

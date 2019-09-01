@@ -5,7 +5,7 @@
         <i
           class="material-icons delete"
           @click="deleteSmoothie(smoothie.id)"
-          v-if="user.uid === smoothie.uid"
+          v-if="isMatch(smoothie)"
         >delete</i>
         <h2 class="indigo-text">{{ smoothie.title }}</h2>
         <ul class="ingredients">
@@ -24,7 +24,7 @@
         </div>
         <h3 class="indigo-text">by {{ smoothie.user_id }}</h3>
       </div>
-      <span class="btn-floating btn-large halfway-fab pink" v-if="user.uid === smoothie.uid">
+      <span class="btn-floating btn-large halfway-fab pink" v-if="isMatch(smoothie)">
         <router-link :to="{ name: 'EditSmoothie', params: { smoothie_slug: smoothie.slug } }">
           <i class="material-icons">edit</i>
         </router-link>
@@ -74,6 +74,13 @@ export default {
       } else {
         // something message for unsigned user
       }
+    },
+    isMatch(smoothie){
+      if (!this.user){
+        return false
+      } else if(this.user.uid === smoothie.uid) {
+        return true
+      }
     }
   },
   created() {
@@ -120,7 +127,7 @@ export default {
   margin-top: 10px;
 }
 
-.index ingredients {
+.index .ingredients {
   margin: 30px auto;
 }
 

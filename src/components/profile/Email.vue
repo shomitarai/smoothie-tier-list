@@ -3,7 +3,7 @@
     <div class="email-profile" v-if="!isEmailEdit">
       <label for="email-view">Email:</label>
       <p name="email-view">{{ email }}</p>
-      <a @click="toggleEditView" class="update-email">Update your email</a>
+      <a @click="toggleEditView" class="update-email" v-if="editable">Update your email</a>
     </div>
     <div class="email-profile-edit" v-if="isEmailEdit">
       <form @submit.prevent="updateEmail">
@@ -44,7 +44,7 @@ export default {
       toggleProgress: false
     }
   },
-  props: ['email'],
+  props: ['email', 'editable'],
   methods: {
     updateEmail() {
       // firebase auth

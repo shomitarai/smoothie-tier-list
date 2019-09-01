@@ -1,7 +1,7 @@
 <template>
   <div class="view-profile container">
     <h2 class="indigo-text">{{ profile_user_id }}'s Profile</h2>
-    <div class="row user-profile">
+    <div class="row user-profile" v-if="isMatch()">
       <div class="col s12 m6 l6 xl6">
         <Email :email="user.email" :editable="isMatch()" />
       </div>
